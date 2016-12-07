@@ -1,0 +1,15 @@
+<html>
+<style type="text/css">
+body {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #666;
+}
+</style>
+<h1>RSS API</h1>
+<hr>
+<p>This API was developed to replace the Google feed API that&rsquo;s been officially deprecated. The main purpose of this development is to provide the means to consume and process RSS feeds using javascript only. This cannot be made using straight javascript because of cross domain restrictions. To overcome this the API uses cross-origin resource sharing (CORS), allowing access to calls from a domain white list.</p>
+<p>Besides implementing the CORS mechanism the system also caches the feeds to improve reliability and performance. The locally stored files are preprocessed to clean up the non-standard tags and sort item on the given criteria. An index of all cached is maintained. Once the feed is included in the index a timed script (cron job) refreshes the content regularly.</p>
+<p>Log files for both feed updates and access are maintain also to allow in depth analysis on the use and performance of the system.</p>
+<p>Click <a href="test.php">here</a> to test your installation.</p>
+</html>
