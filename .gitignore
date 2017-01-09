@@ -1,1 +1,6 @@
-
+cache/feeds/
+cache/logs/requests
+cache/logs/updates
+lib/_notes/dwsync.xml
+service/_notes/dwsync.xml
+cache/logs/_notes/dwsync.xml

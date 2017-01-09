@@ -1,0 +1,26 @@
+@charset "utf-8";
+h1 {
+	font-size: xx-large;
+	padding: 10px;
+	border-bottom-width: thin;
+	border-bottom-style: solid;
+	border-bottom-color: #666;
+	text-align: center;
+	margin: 0px;
+}
+body {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	background-color: #EFEFEF;
+	color: #666;
+}
+
+#description{
+	text-align: center;
+	background-color: #DDD;
+	padding: 10px;
+}
+#report {
+	padding-top: 10px;
+	padding-right: 100px;
+	padding-left: 100px;
+}
