@@ -1,3 +1,4 @@
+<?php
 /* -----------------------------------------------------------------------
 LICENCE
 
@@ -38,7 +39,7 @@ two entries must be included. There’s no limit to the number of allowed domain
 EG:
 $ALLOWED_DOMAINS = array('https://example.com','http://example.com','https://example.com:8080','http://subdomain.example.com');
 -------------------------------------------------------------------------*/
-<?php
+
 $ALLOWED_DOMAINS = array('');
 $BASE_FEED_URL = 'http://[YOUR DOMAIN]/cache/feeds/';
 ?>
