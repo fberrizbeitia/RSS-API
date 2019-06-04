@@ -9,6 +9,8 @@ Log files for both feed updates and access are maintain also to allow in depth a
 
 To install the service copy all files to a directory in your web server, ideally with its own domain. The service and cache folder and subfolders must have writing permission.
  
+PHP needs to be available on the server, with php5-curl and php5-xsl.  
+
 In the service folder open config.php, add the allowed domains and the base url for the feeds folder. When adding domains is important to notice that subdomains must be added explicitly to work, the url must include the protocol (http or https) if a domain may access the feeds using either both entries must be included. There’s no limit to the number of allowed domains.
 
 In the lib folder open the feed.js file and set the proper values for the serviceURL and the loaderURL. For example:
@@ -24,7 +26,7 @@ var itemsList = [];
 
 For CORS security reasons, before using the API, the domain and/or subdomains where the /lib/feed.js is included must be whitelisted in the server. 
 
-1.	Include jQuery.
+1.	Include jQuery. (currently using version 1.11.3, but feel free to experiment with other versions)
 2.	Include the properly configured feed.js file
 	```html
 	<script src=" https://rssapi.example.com/lib/feed.js "></script>
