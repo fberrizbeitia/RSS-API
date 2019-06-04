@@ -42,4 +42,6 @@ $ALLOWED_DOMAINS = array('https://example.com','http://example.com','https://exa
 
 $ALLOWED_DOMAINS = array('');
 $BASE_FEED_URL = 'http://[YOUR DOMAIN]/cache/feeds/';
+
+$GLOBALS['BASE_DOMAIN'] = '[YOUR DOMAIN]';
 ?>

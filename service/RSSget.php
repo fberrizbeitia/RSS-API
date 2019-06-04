@@ -30,6 +30,9 @@ if(isset($_POST['feedUrl']) and $isOriginValid){
 		$channelTitle = "";
 		$channelUrl = "";
 		$channelDescription = "";
+
+		$update_reason = 'not in the index';
+
 		
 		if(count($result) > 0){
 			$update = false;
@@ -42,34 +45,41 @@ if(isset($_POST['feedUrl']) and $isOriginValid){
 			
 			
 			$interval = $lastUpdated->diff($now);
-			
+			$update_reason = 'not updated';
+
 			if ( $interval->days > 0){
 				$update = true;
+				$update_reason = 'more than a day old';
 			}
 			
 			//if the limit,  sort field or method has chane also update the file
 			if(isset($_POST['sortField']) and $_POST['sortField'] != '' and $_POST['sortField'] != $result[0]['sort']['field']){
 				$update = true;
+				$update_reason = 'sort field changed';
 			}
 			
 			if(isset($_POST['sortOrder']) and $_POST['sortOrder'] != '' and $_POST['sortOrder'] != $result[0]['sort']['order']){
 				$update = true;
-
+				$update_reason = 'sort order changed';
 			}
 			
 			if(isset($_POST['sortType']) and $_POST['sortType'] != '' and $_POST['sortType'] != $result[0]['sort']['type']){
 				$update = true;
-
+				$update_reason = 'sort type changed';
 			}
 			
 			if(isset($_POST['limit']) and $_POST['limit'] != '' and $_POST['limit'] != $result[0]['limit']){
 				$update = true;
+				$update_reason = 'limit changed';
 			}
 					
 			
+			
 			if ($update){
+				
 				$cache->getFeed($_POST['feedUrl'],$_POST['sortField'],$_POST['sortOrder'],$_POST['sortType'],$_POST['limit']);
 				$cache->updateIndex($result[0]['id'],$_POST['feedUrl'],$_POST['sortField'],$_POST['sortOrder'],$_POST['sortType'],$_POST['limit']);
+				
 			}
 			
 			
@@ -96,14 +106,17 @@ if(isset($_POST['feedUrl']) and $isOriginValid){
 		
 		if($id != false){
 			$objRss = new RSS($channelTitle,$channelUrl,$channelDescription,"en-us",'./');
+			
 			$objRss->parse($feed,false);
 			echo $objRss->getJSON();
+			
 			$now = new DateTime();
-			$log = $now->format("Y-m-d H:i:s")."|".$id.PHP_EOL;
+			$log = $now->format("Y-m-d H:i:s")."|".$id."|updated: $update_reason".PHP_EOL;
 			$name = "../cache/logs/requests/".$now->format("Y-m-d").".log";
 			$fw = fopen($name,'a');
 			fputs($fw,$log,strlen($log));
 			fclose($fw);
+			
 			
 		}else{
 			echo("{}");
@@ -113,6 +126,7 @@ if(isset($_POST['feedUrl']) and $isOriginValid){
 			$fw = fopen($name,'a');
 			fputs($fw,$log,strlen($log));
 			fclose($fw);
+			
 		}
 	
 	}//if($_GET['url'] != ''){

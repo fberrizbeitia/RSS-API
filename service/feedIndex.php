@@ -106,7 +106,7 @@ class feedIndex {
 			$objRss = new RSS('',$url,'',"en-us",'./');
 			$objRss->parse($url);
 			if(count($objRss->items) >= 1){				
-				if($sortField != '' and $sortOrder!='' and $sortType!=''){
+				if($sortField != '' and $sortOrder!='' and $sortType!='' and $sortField != 'none'){
 					$objRss->sortBy($sortField,$sortType,$sortOrder);
 				}
 					

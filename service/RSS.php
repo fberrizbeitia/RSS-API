@@ -57,7 +57,7 @@ class RSS {
 			} //}else{
 			
 			if(strtolower($type) == 'date'){
-				if(is_numeric($indexVal)){ // is year only
+				if(is_numeric($indexVal)){
 					$indexVal = strtotime($indexVal."-01-01");
 				}else{
 					$indexVal = strtotime($indexVal);
@@ -131,9 +131,20 @@ class RSS {
 		if ($showlog) { print_r('Start Parsing .............................................. '.PHP_EOL);}		
 		$loadedRss = get_fcontent( $feed );		
 		
+		if( strpos($feed,$GLOBALS['BASE_DOMAIN']) == false ){
+			$method = 'curl';
+		}else{
+			$method = 'file_get_content';
+		}
+
+		$loadedRss = get_fcontent( $feed, 0, 10, $method);		
+		
+
 		if($loadedRss[1]['http_code'] == 200){
 			if ($showlog) { print_r('http code '.$loadedRss[1]['http_code'].' Succefully loaded file at URL: '.$loadedRss[1]['url']. PHP_EOL);}
+			
 			$xmlDoc = new DOMDocument();
+			
 			$cleanXML = $this->stripInvalidXml($loadedRss[0]);
 			$status = $xmlDoc->loadXML(atom2rss::toRSS($cleanXML));
 			$rssInfo =  $xmlDoc->getElementsByTagName('rss')->item(0);	
@@ -141,6 +152,7 @@ class RSS {
 	
 			$xpath = new DOMXPath($xmlDoc);
 			$context = $xmlDoc->documentElement;
+			
 			foreach( $xpath->query('namespace::*', $context) as $node ) {
 				$NSname = explode(':',$node->nodeName);
 				if(count($NSname) > 1){
@@ -152,6 +164,7 @@ class RSS {
 				}
 			}
 			
+			
 			$items = $xmlDoc->getElementsByTagName('item');
 			$cont = 0;
 			
@@ -162,8 +175,10 @@ class RSS {
 				
 			if ($showlog) { print_r($items->length.' Items found in feed '.PHP_EOL);}	
 			
+			
 			foreach ($items as $item){
 				$rssItem = array('title'=>'','description'=>'','link'=>'','author'=>'','category'=>'','media'=>'','guid'=>'','pubDate'=>'','extension'=>array());
+				
 				foreach($item->childNodes as $i){
 				   switch($i->nodeName){
 					 case 'title':
@@ -199,6 +214,10 @@ class RSS {
 						break;
 					
 					case 'media:content':
+						$rssItem['media'] = array('url'=>$i->getAttribute('url'),'type'=>$i->getAttribute('type'));
+						break;
+					
+					case 'media:thumbnail':
 						$rssItem['media'] = array('url'=>$i->getAttribute('url'),'type'=>$i->getAttribute('type'));
 						break;
 					
